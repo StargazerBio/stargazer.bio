@@ -5,33 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stargazer</title>
   <meta name="description" content="Open-source bioinformatics pipelines you run, combine and extend in marimo notebooks.">
+  <meta name="theme-color" content="#1a1325">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+    /* The dashboard's tokens (StargazerBio/infra app/templates/base.html), so
+       the landing page, the dashboard and the docs read as one product. */
     :root {
-      --bg: #fff7fa;
-      --ink: #232659;
-      --muted: #55588a;
-      --accent: #c92a63;
-      --accent-ink: #ffffff;
-      --pollen: #f2b630;
-      --rule: #ecd3de;
-      --code-bg: #fbe7ef;
-      color-scheme: light;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #161838;
-        --ink: #fbeaf1;
-        --muted: #b9b6da;
-        --accent: #ff7aab;
-        --accent-ink: #161838;
-        --rule: #2c2f5e;
-        --code-bg: #20234c;
-        color-scheme: dark;
-      }
+      --bg: #1a1325;
+      --surface: #231b33;
+      --border: #3a2f50;
+      --border-strong: #4f4268;
+      --text: #d3cce0;
+      --text-dim: #9d93b3;
+      --heading: #f5f1fc;
+      --accent: #b9a0ec;
+      --accent-line: rgba(167, 139, 250, 0.42);
+      --accent-soft: rgba(167, 139, 250, 0.13);
+      --accent-softer: rgba(167, 139, 250, 0.24);
+      --green: #9cd47f;
+      --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      color-scheme: dark;
     }
 
     * { box-sizing: border-box; }
@@ -40,117 +37,178 @@
       margin: 0;
       min-height: 100vh;
       background: var(--bg);
-      color: var(--ink);
-      font: 400 1.125rem/1.6 "Atkinson Hyperlegible", system-ui, sans-serif;
+      color: var(--text);
+      font: 400 1.0625rem/1.6 var(--sans);
       display: flex;
       flex-direction: column;
     }
     a { color: inherit; }
-    a:focus-visible, .button:focus-visible {
-      outline: 3px solid var(--pollen);
+    :focus-visible {
+      outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
 
+    #sky, #sky-glow {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    #sky { display: block; }
+    #sky-glow {
+      pointer-events: none;
+      background:
+        radial-gradient(60% 50% at 50% 12%, rgba(167, 139, 250, 0.10), transparent 70%),
+        radial-gradient(45% 40% at 78% 82%, rgba(134, 199, 108, 0.06), transparent 70%);
+    }
+
+    .top, .page, footer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 70rem;
+      margin: 0 auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font: 600 1.05rem/1 var(--mono);
+      letter-spacing: -0.01em;
+      color: var(--heading);
+      text-decoration: none;
+    }
+    .brand img { width: 36px; height: 36px; image-rendering: pixelated; }
+    .top nav { display: flex; gap: 1.25rem; font-size: 0.9rem; }
+    .top nav a { color: var(--text-dim); text-decoration: none; }
+    .top nav a:hover { color: var(--accent); }
+
     .page {
       flex: 1;
-      width: 100%;
-      max-width: 72rem;
-      margin: 0 auto;
-      padding: 2rem 1rem 3rem;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       align-items: center;
-      gap: 1rem;
-    }
-
-    .wordmark {
-      font: 700 1.75rem/1 "Pixelify Sans", monospace;
-      margin: 0 0 2.5rem;
-      letter-spacing: 0.02em;
-    }
-
-    .lily {
-      width: min(60vw, 15rem);
-      height: auto;
-      justify-self: center;
-      image-rendering: pixelated;
-      transform: rotate(-8deg);
+      gap: 2rem;
+      padding-top: 1.5rem;
+      padding-bottom: 3rem;
     }
 
     h1 {
-      font: 700 clamp(2.25rem, 1.4rem + 3.6vw, 3.75rem)/1.08 "Pixelify Sans", monospace;
+      font: 600 clamp(2.25rem, 1.5rem + 3.2vw, 3.6rem)/1.08 var(--mono);
+      letter-spacing: -0.035em;
+      color: var(--heading);
       margin: 0 0 1.25rem;
-      max-width: 14ch;
+      max-width: 13ch;
     }
-
     .lede {
       margin: 0 0 2rem;
-      max-width: 34rem;
-      color: var(--muted);
+      max-width: 36rem;
+      font-size: 1.125rem;
+      color: var(--text);
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 0 0 2.75rem;
+    }
+    .btn {
+      display: inline-flex;
       align-items: center;
-      gap: 0.75rem 1.5rem;
-      margin: 0 0 2.5rem;
-    }
-    .button {
-      display: inline-block;
-      padding: 0.7rem 1.5rem;
-      background: var(--accent);
-      color: var(--accent-ink);
-      font-weight: 700;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      font: 500 0.92rem/1 var(--mono);
+      letter-spacing: 0.01em;
       text-decoration: none;
-      border-radius: 2px;
-      box-shadow: 4px 4px 0 var(--ink);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
-    .button:hover { box-shadow: 2px 2px 0 var(--ink); transform: translate(2px, 2px); }
-    .link {
-      font-weight: 700;
-      text-underline-offset: 0.25em;
-      text-decoration-thickness: 2px;
-      text-decoration-color: var(--accent);
+    .btn-primary {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: var(--accent-line);
     }
+    .btn-primary:hover { background: var(--accent-softer); border-color: var(--accent); }
+    .btn-muted {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-muted:hover { background: var(--surface); border-color: var(--border-strong); color: var(--heading); }
 
-    .local {
-      max-width: 34rem;
-      padding-top: 1.5rem;
-      border-top: 2px dashed var(--rule);
-      font-size: 1rem;
-      color: var(--muted);
+    .local { max-width: 36rem; }
+    .local p { margin: 0 0 0.6rem; font-size: 0.92rem; color: var(--text-dim); }
+    .terminal {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 0.6rem 0.7rem 0.9rem;
+      background: rgba(35, 27, 51, 0.72);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      border: 1px solid rgba(79, 66, 104, 0.6);
+      border-radius: 10px;
     }
-    .local p { margin: 0 0 0.5rem; }
-    .local code {
-      display: block;
-      overflow-x: auto;
-      padding: 0.6rem 0.8rem;
-      background: var(--code-bg);
-      color: var(--ink);
-      font: 0.9rem/1.5 ui-monospace, "SF Mono", Menlo, monospace;
-      white-space: pre;
+    .terminal code {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font: 400 0.86rem/1.5 var(--mono);
+      color: var(--heading);
+    }
+    .terminal code::before { content: "$ "; color: var(--green); }
+    .copy {
+      flex: none;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.76rem;
+      background: transparent;
+      color: var(--text-dim);
+      border-color: var(--border);
+    }
+    .copy:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface); }
+    .copy[data-done] { color: var(--green); border-color: rgba(134, 199, 108, 0.42); }
+
+    .lily {
+      width: min(56vw, 14rem);
+      height: auto;
+      justify-self: center;
+      image-rendering: pixelated;
+      transform: rotate(-8deg);
+      filter: drop-shadow(0 0 48px rgba(167, 139, 250, 0.28));
     }
 
     footer {
-      width: 100%;
-      max-width: 72rem;
-      margin: 0 auto;
-      padding: 1.25rem 1rem 2rem;
-      font-size: 0.875rem;
-      color: var(--muted);
+      padding-top: 1.25rem;
+      padding-bottom: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
     }
     footer p { margin: 0; }
 
     @media (min-width: 52rem) {
+      .top, .page, footer { padding-left: 2rem; padding-right: 2rem; }
       .page {
         grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
         gap: 3rem;
-        padding: 3rem 2rem 4rem;
+        padding-top: 3rem;
+        padding-bottom: 5rem;
       }
       .text { order: 1; }
-      .lily { order: 2; width: 100%; max-width: 30rem; }
-      footer { padding: 1.25rem 2rem 2rem; }
+      .lily { order: 2; width: 100%; max-width: 26rem; }
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -159,30 +217,61 @@
         from { transform: rotate(-20deg) scale(0.6); opacity: 0; }
         to { transform: rotate(-8deg) scale(1); opacity: 1; }
       }
-      .button { transition: transform 80ms steps(2), box-shadow 80ms steps(2); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .terminal { backdrop-filter: none; -webkit-backdrop-filter: none; }
     }
   </style>
 </head>
 <body>
+  <div id="sky-glow"></div>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <header class="top">
+    <a class="brand" href="/"><img src="assets/favicon.png" alt="" width="32" height="32">Stargazer</a>
+    <nav aria-label="Site">
+      <a href="https://docs.stargazer.bio/">Docs</a>
+      <a href="https://github.com/StargazerBio/stargazer">GitHub</a>
+    </nav>
+  </header>
   <main class="page">
     <img class="lily" src="assets/lily.png" alt="" width="959" height="816">
     <div class="text">
-      <p class="wordmark">Stargazer</p>
       <h1>Genomics pipelines in a notebook</h1>
       <p class="lede">Stargazer is an open-source library of bioinformatics tasks, from alignment and germline variant calling to single-cell RNA-seq clustering. Run them, chain them into pipelines and write your own in marimo notebooks, with an AI agent in the terminal beside you.</p>
       <div class="actions">
-        <a class="button" href="/login/">Log in</a>
-        <a class="link" href="https://docs.stargazer.bio/">Read the docs</a>
-        <a class="link" href="https://github.com/StargazerBio/stargazer">Source on GitHub</a>
+        <a class="btn btn-primary" href="/login/">Log in</a>
+        <a class="btn btn-muted" href="https://docs.stargazer.bio/">Read the docs</a>
       </div>
       <div class="local">
         <p>Or run it on your own machine:</p>
-        <code>docker run -p 8080:8080 ghcr.io/stargazerbio/stargazer</code>
+        <div class="terminal">
+          <code id="run-local">docker run -p 8080:8080 ghcr.io/stargazerbio/stargazer</code>
+          <button class="btn copy" type="button" data-copy="run-local">Copy</button>
+        </div>
       </div>
     </div>
   </main>
   <footer>
     <p>Stargazer is alpha software. Don't upload sensitive data, such as identifiable patient data.</p>
   </footer>
+  <script src="assets/sky.js"></script>
+  <script>
+    for (const button of document.querySelectorAll("[data-copy]")) {
+      button.addEventListener("click", async () => {
+        const text = document.getElementById(button.dataset.copy).textContent;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          return;
+        }
+        button.textContent = "Copied";
+        button.dataset.done = "";
+        setTimeout(() => {
+          button.textContent = "Copy";
+          delete button.dataset.done;
+        }, 1600);
+      });
+    }
+  </script>
 </body>
 </html>
