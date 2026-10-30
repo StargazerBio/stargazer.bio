@@ -106,12 +106,14 @@
     }
 
     h1 {
-      font: 600 clamp(2.25rem, 1.5rem + 3.2vw, 3.6rem)/1.08 var(--mono);
+      font: 600 clamp(2rem, 1.35rem + 2.6vw, 3.1rem)/1.1 var(--mono);
       letter-spacing: -0.035em;
       color: var(--heading);
       margin: 0 0 1.25rem;
-      max-width: 13ch;
+      max-width: 21ch;
+      text-wrap: balance;
     }
+    .nowrap { white-space: nowrap; }
     .lede {
       margin: 0 0 2rem;
       max-width: 36rem;
@@ -229,7 +231,7 @@
   <main class="page">
     <img class="lily" src="assets/lily.png" alt="" width="959" height="816">
     <div class="text">
-      <h1>Genomics pipelines in a notebook</h1>
+      <h1><span class="nowrap">Production-grade</span> workflows from the comfort of a notebook</h1>
       <p class="lede">Stargazer is an open-source library of bioinformatics tasks, from alignment and germline variant calling to single-cell RNA-seq clustering. Run them, chain them into pipelines and write your own in marimo notebooks, with an AI agent in the terminal beside you.</p>
       <div class="actions">
         <a class="btn btn-primary" href="/login/">Log in</a>
