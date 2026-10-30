@@ -211,13 +211,6 @@
       .lily { order: 2; width: 100%; max-width: 26rem; }
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .lily { animation: bloom 900ms steps(6, end) both; }
-      @keyframes bloom {
-        from { transform: rotate(-20deg) scale(0.6); opacity: 0; }
-        to { transform: rotate(-8deg) scale(1); opacity: 1; }
-      }
-    }
     @media (prefers-reduced-motion: reduce) {
       .terminal { backdrop-filter: none; -webkit-backdrop-filter: none; }
     }
